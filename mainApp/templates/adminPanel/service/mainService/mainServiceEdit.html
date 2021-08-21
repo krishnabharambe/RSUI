@@ -1,0 +1,103 @@
+{% extends 'adminBase.html' %} {% block content %}
+
+<div class="row">
+  <div class="col s12 m6">
+    <h4>Service</h4>
+    <hr />
+    <h6>{{mainService.title}}</h6>
+    <br />
+    <p>{{mainService.shortdescription}}</p>
+    <br />
+    <p>{{mainService.description}}</p>
+    <br />
+    <b>Status </b>
+    <p>{{mainService.status}}</p>
+    <br />
+    <b>ICON :</b>
+    <img src="{{mainService.icon.url}}" />
+    <br />
+    <b>Banner :</b>
+    <img src="{{mainService.banner.url}}" />
+  </div>
+
+  <div class="col s12 m6">
+    <h4>Edit Service</h4>
+    <form
+      class="z-depth-1"
+      enctype="multipart/form-data"
+      action="{% url 'mainServiceEdit' id=mainService.id %}"
+      method="POST"
+    >
+      {% csrf_token %}
+      <div class="input-field col s12">
+        <input
+          id="title"
+          name="title"
+          type="text"
+          class="validate"
+          value="{{mainService.title}}"
+        />
+        <label for="title">Service Title</label>
+      </div>
+
+      <div class="input-field col s12">
+        <input
+          id="shortdescription"
+          name="shortdescription"
+          type="text"
+          class="validate"
+          value="{{mainService.shortdescription}}"
+        />
+        <label for="shortdescription">Short Description</label>
+      </div>
+
+      <div class="input-field col s12">
+        <textarea
+          id="textarea1"
+          name="description"
+          class="materialize-textarea"
+          value="{{mainService.description}}"
+        >
+{{mainService.description}}</textarea
+        >
+        <label for="textarea1">Full description</label>
+      </div>
+      <div class="input-field col s12">
+        <select name="status">
+          <option value="" disabled selected>Choose your option</option>
+          <option value="1">Active</option>
+          <option value="2">Deleted</option>
+          <option value="3">Disabled</option>
+        </select>
+        <label>Service Status</label>
+      </div>
+
+      <div class="file-field col s12 input-field">
+        <div class="btn">
+          <span>Icon</span>
+          <input type="file" name="icon" />
+        </div>
+        <div class="file-path-wrapper">
+          <input class="file-path validate" name="" type="text" />
+        </div>
+      </div>
+      <div class="file-field col s12 input-field">
+        <div class="btn">
+          <span>Banner</span>
+          <input type="file" name="banner" />
+        </div>
+        <div class="file-path-wrapper">
+          <input class="file-path validate" type="text" />
+        </div>
+        <br />
+        <hr />
+      </div>
+
+      <div class="file-field right-align col s12 input-field">
+        <button type="submit" class="btn blue">Save & Publish</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

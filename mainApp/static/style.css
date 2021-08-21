@@ -1,0 +1,37 @@
+.container-fluid {
+  width: 100%;
+  margin: auto;
+}
+
+@media (min-width: 768px) {
+  .container-fluid {
+    width: 100%;
+  }
+}
+@media (min-width: 992px) {
+  .container-fluid {
+    width: 95%;
+  }
+}
+@media (min-width: 1200px) {
+  .container-fluid {
+    width: 95%;
+  }
+}
+
+.mt-3 {
+  margin-top: 15px;
+}
+
+.pt-3 {
+  padding-top: 15px;
+}
+
+a {
+  color: inherit;
+}
+
+.img-responsive {
+  max-width: 100%;
+  height: auto;
+}

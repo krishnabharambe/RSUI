@@ -1,0 +1,59 @@
+{% extends 'base.html' %} {% load static %} {% block content %} {% comment %}
+<div class="container-fluid">
+  <img
+    class="responsive-img"
+    width="100%"
+    height="50%"
+    src="{{hostservice.banner.url }}"
+  />
+</div>
+{% endcomment %}
+<!-- start container-fluid -->
+<div class="container-fluid">
+  <!-- start row -->
+  <div class="row">
+    <!-- start col s12 m12 -->
+    <div class="col s12">
+      <!-- start card -->
+      <div class="card z-depth-1">
+        <div class="card-content">
+          <span class="card-title">{{hostservice.title}}</span>
+          <b>{{hostservice.shortdescription}}</b>
+          <br /><br />
+          <p>{{hostservice.description}}</p>
+          <br />
+          <div class="row">
+            {% for service in subService %}
+            <div class="col s12 m4">
+              <div class="card horizontal">
+                <div class="card-image">
+                  <img src="{{service.icon.url}}" />
+                </div>
+                <div class="card-stacked">
+                  <div class="card-content">
+                    <b> {{service.title}}</b>
+                    <p>{{service.shortdescription}}</p>
+                  </div>
+                  <div class="card-action right-align">
+                    <a
+                      class="btn blue"
+                      href="{% url 'bookService' subSID=service.id %}"
+                      >Book Service</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      <!-- end card -->
+    </div>
+    <!-- end col s12 m12 -->
+  </div>
+  <!-- end row -->
+</div>
+<!-- end container-fluid -->
+<img class="responsive-img" src={% static 'images/demo.png' %} /> {% endblock %}

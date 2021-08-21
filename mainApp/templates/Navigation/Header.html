@@ -1,0 +1,39 @@
+{% load static %}
+
+<nav class="indigo darken-4 nav-extended">
+  <div class="container-fluid">
+    <div class="nav-wrapper">
+      <a href="{% url 'index' %}" class="brand-logo">logo here</a>
+
+      <a href="#" class="sidenav-trigger" data-target="mobile-nav">
+        <i class="material-icons">dehaze</i>
+      </a>
+
+      <ul class="right hide-on-med-and-down">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Video</a></li>
+        <li><a href="#">Service</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+        {% if user.is_authenticated %}
+        <li><a href="{% url 'logout' %}">Log out</a></li>
+        {% else %}
+        <li><a href={% url 'login' %}>Log In</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<ul class="sidenav" id="mobile-nav">
+  <li><a href="#">Home</a></li>
+        <li><a href="#">Video</a></li>
+        <li><a href="#">Service</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+        {% if user.is_authenticated %}
+        <li><a href="{% url 'logout' %}">Log out</a></li>
+        {% else %}
+        <li><a href={% url 'login' %}>Log In</a></li>
+        {% endif %}
+</ul>

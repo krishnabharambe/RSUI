@@ -1,0 +1,81 @@
+{% extends 'base.html' %} {% block content %}
+
+
+<div class="container-fluid">
+    <div class="row ">
+        <div class="col s12 m6">
+            <div class="card z-depth-0">
+                <div class="card-content">
+                    <span class="card-title">{{subService.title}}</span>
+                    <b>{{subService.shortdescription}}</b>
+                    <br /><br />
+                    <p>
+                        {{subService.description}}
+                    </p>
+                    <br />
+                    <div class="row">
+                        <div class="col s6 m3 l2 xl1">
+                            <div class="card z-depth-0">
+                                <div class="card-content ">
+                                    <img class="responsive-img" src="{{data.icon.url}}" />
+                                    <p class"truncate">{{data.title}}</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+
+        <div class="col s12 m6">
+            <div class="card z-depth-0">
+                <div class="card-content">
+                    <span class="card-title">Book Service </span>
+                    <b>Please Provide Below Details</b>
+                    <br /><br />
+                    <div class="row">
+                        <form class="col s12" action="{% url 'bookService' subSID=subService.id %}" method="POST">{% csrf_token %}
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <input id="email" type="text" name="phone" value="+91 {{ authUser}}">
+                                    <label for="email">Contact</label>
+                                </div>
+              
+               
+                                <div class="input-field col s12">
+                                    <textarea id="textarea1" name="address" class="materialize-textarea"></textarea>
+                                    <label for="textarea1">Address</label>
+                                </div>
+                  
+                                <div class="input-field col s6">
+                                    <input type="date" name="ServiceDate" class="datepicker">
+                                    <label for="textarea1">Service Date</label>
+                                </div>
+
+                                <div class="input-field col s6">
+                                    <input id="text" name="time" />
+                                    <label for="textarea1">Service Time</label>
+                                </div>
+                     
+                            <div class="row right-align ">
+                                <button type="submit" class="waves-effect waves-light btn blue">Save & Confirm Booking</button>
+                            </div>
+               
+                        </form>
+                    </div>
+                    <br />
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

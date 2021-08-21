@@ -1,0 +1,43 @@
+{% extends 'adminBase.html' %} {% block content %}
+
+<div class="row">
+  <div class="col s12 m6">
+    <h4>Service</h4>
+    <hr />
+    <h6>{{mainService.title}}</h6>
+    <br />
+    <p>{{mainService.shortdescription}}</p>
+    <br />
+    <p>{{mainService.description}}</p>
+    <br />
+    <b>Status </b>
+    <p>{{mainService.status}}</p>
+    <br />
+    <b>ICON :</b>
+    <img src="{{mainService.icon.url}}" />
+    <br />
+    <b>Banner :</b>
+    <img src="{{mainService.banner.url}}" />
+  </div>
+
+  <div class="col s12 m6">
+    <h4>Delete Service</h4>
+    <form
+      class="z-depth-1"
+      enctype="multipart/form-data"
+      action="{% url 'mainServiceDelete' id=mainService.id %}"
+      method="POST"
+    >
+      {% csrf_token %}
+      <div class="input-field col s12">
+        <label for="title">Sure want to delete??</label>
+      </div>
+
+      <div class="file-field right-align col s12 input-field">
+        <button type="submit" class="btn red">Save & Delete</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

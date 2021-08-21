@@ -1,0 +1,24 @@
+{% extends 'adminBase.html' %} {% block content %}
+
+<div class="row">
+  <div class="col s12">
+    <ul class="tabs">
+      <li class="tab col s3">
+        <a class="active" href="#newPendingRequests">New & Pending</a>
+      </li>
+      <li class="tab col s3">
+        <a href="#InProgress">In Progress</a>
+      </li>
+      <li class="tab col s3"><a href="#Completed">Completed</a></li>
+      <li class="tab col s3"><a href="#Cancelled">Cancelled</a></li>
+    </ul>
+  </div>
+  <div id="newPendingRequests" class="col s12">
+    {% include 'adminPanel/Srequests/newRequests.html' %}
+  </div>
+  <div id="InProgress" class="col s12">In Progress</div>
+  <div id="Completed" class="col s12">Completed</div>
+  <div id="Cancelled" class="col s12">Cancelled</div>
+</div>
+
+{% endblock %}

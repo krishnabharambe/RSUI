@@ -1,0 +1,34 @@
+<table>
+  <thead>
+    <tr>
+      <th>Service</th>
+      <th>Phone</th>
+      <th>Address</th>
+      <th>ServiceDate</th>
+      <th>time</th>
+      <th>status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  {% if newRequests %}
+  <tbody>
+    {% for req in newRequests %}
+    <tr>
+      <td>{{req.MainService}}</td>
+      <td>{{req.phone}}</td>
+      <td>{{req.address}}</td>
+      <td>{{req.ServiceDate}}</td>
+      <td>{{req.time}}</td>
+      <td>{{req.status}}</td>
+      <td>
+        <i class="material-icons blue-text">group_add</i>
+        <i class="material-icons red-text">delete</i>
+        <i class="material-icons orange-text">cancel</i>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  {% else %}
+  <p>No Data Found.</p>
+  {% endif %}
+</table>
