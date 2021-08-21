@@ -5,8 +5,14 @@ from . import views
 urlpatterns = [
     path('', views.index, name="index"),
     path('validatePhone/', views.ValidatePhoneSendOTP, name="validatePhone"),
+    path('ValidatePhoneForgot/', views.ValidatePhoneForgot,
+         name="ValidatePhoneForgot"),
     path('validateOtp/<phone>', views.ValidatePhoneOTP, name="validateOtp"),
+    path('ForgotValidateOTP/<phone>',
+         views.ForgotValidateOTP, name="ForgotValidateOTP"),
     path('register/<phone>', views.Register, name="Register"),
+    path('ForgetPasswordChange/<phone>/<otp>',
+         views.ForgetPasswordChange, name="ForgetPasswordChange"),
     path('login/', views.Login, name="login"),
     path('logout/', views.logout_user, name="logout"),
     path('hostservice/<MSID>', views.hostservice, name="hostservice"),
@@ -27,8 +33,9 @@ urlpatterns = [
     path('adminurl/service/<id>/<sid>/delete/',
          views.deleteSubservice, name="deleteSubservice"),
 
-
     path('adminurl/requests', views.adminRequests, name="adminRequests"),
+
+
 
 
 

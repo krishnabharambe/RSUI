@@ -64,12 +64,19 @@
                           value="Sign In"
                         />
                       </div>
-                      <div class="col s6">
-                        <a href="{% url 'validatePhone' %}" class="blue-text"
-                          >Don't have account? Sign Up</a
+                      <div class="col s6 right-align">
+                        <a
+                          href="{% url 'ValidatePhoneForgot' %}"
+                          class="blue-text"
+                          >Forget Password?</a
                         >
                       </div>
                     </div>
+                  </div>
+                  <div class="center-align m-3">
+                    <a href="{% url 'validatePhone' %}" class="blue-text"
+                      >Don't have account? Sign Up</a
+                    >
                   </div>
                 </div>
               </form>

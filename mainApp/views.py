@@ -6,6 +6,7 @@ from random import randint
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.db.models import Q
 
 
 def adminRequests(request):
@@ -157,6 +158,157 @@ def logout_user(request):
     logout(request)
     # messages.success(request, ('You Have Been Logged Out...'))
     return redirect('index')
+
+
+def ForgetPasswordChange(request, phone, otp):
+    '''
+    if forgot_logged is valid and account exists then only pass otp, phone and password to reset the password. All three should match.APIView
+    '''
+
+    if request.method == "POST":
+        phone = phone
+        otp = otp
+        password = request.POST['password']
+
+        if phone and otp and password:
+            old = PhoneOTP.objects.filter(
+                Q(phone__iexact=phone) & Q(otp__iexact=otp))
+            if old.exists():
+                old = old.first()
+                if old.forgot_logged:
+                    post_data = {
+                        'phone': phone,
+                        'password': password
+                    }
+                    user_obj = get_object_or_404(User, phone__iexact=phone)
+                    # serializer = ForgetPasswordSerializer(data=post_data)
+                    # serializer.is_valid(raise_exception=True)
+                    if user_obj:
+                        user_obj.set_password(password)
+                        user_obj.active = True
+                        user_obj.save()
+                        old.delete()
+                        messages.success(
+                            request, ('Password changed successfully. Please Login'))
+                        return redirect('login')
+
+                else:
+                    messages.error(
+                        request, ('OTP Verification failed. Please try again in previous step'))
+                    return redirect('ValidatePhoneForgot')
+
+            else:
+                messages.error(
+                    request, ('Phone and otp are not matching or a new phone has entered. Request a new otp in forgot password'))
+                return redirect('ValidatePhoneForgot')
+        else:
+            messages.error(
+                request, ('Post request have parameters mising.'))
+            return redirect('ValidatePhoneForgot')
+    else:
+        return render(request, "Auth/ForgetPasswordChange.html", {'phone': phone, 'otp': otp})
+
+
+def ForgotValidateOTP(request, phone):
+    '''
+    If you have received an otp, post a request with phone and that otp and you will be redirected to reset  the forgotted password
+    '''
+
+    if request.method == "POST":
+        phone = phone
+        otp_sent = request.POST['otp']
+
+        if phone and otp_sent:
+            old = PhoneOTP.objects.filter(phone__iexact=phone)
+            if old.exists():
+                old = old.first()
+                if old.forgot == False:
+                    messages.error(
+                        request, ('This phone havenot send valid otp for forgot password. Request a new otp or contact help centre.'))
+                    return redirect('ForgotValidateOTP', phone=phone)
+
+                otp = old.otp
+                if str(otp) == str(otp_sent):
+                    old.forgot_logged = True
+                    old.save()
+
+                    messages.success(
+                        request, ('OTP matched, kindly proceed to create new password'))
+                    return redirect('ForgetPasswordChange', phone=phone, otp=otp)
+                else:
+                    messages.error(
+                        request, ('OTP incorrect, please try again'))
+                    return redirect('ForgotValidateOTP', phone=phone)
+
+            else:
+                messages.error(
+                    request, ('Phone not recognised. Kindly request a new otp with this number'))
+                return redirect('ForgotValidateOTP', phone=phone)
+
+        else:
+            messages.error(
+                request, ('Either phone or otp was not recieved in Post request'))
+            return redirect('ForgotValidateOTP', phone=phone)
+    else:
+        return render(request, "Auth/ForgotValidateOTP.html", {'phone': phone})
+
+
+def ValidatePhoneForgot(request):
+    '''
+    Validate if account is there for a given phone number and then send otp for forgot password reset'''
+
+    if request.method == "POST":
+        phone_number = request.POST['phone']
+        if phone_number:
+            phone = str(phone_number)
+            user = User.objects.filter(phone__iexact=phone)
+            if user.exists():
+                otp = send_otp_forgot(phone)
+                print(phone, otp)
+                if otp:
+                    otp = str(otp)
+                    count = 0
+                    old = PhoneOTP.objects.filter(phone__iexact=phone)
+                    if old.exists():
+                        old2 = old.first()
+                        k = old2.count
+                        count = old.first().count
+                        old.update(count=count + 1)
+                        old.update(otp=otp)
+                        if k > 500:
+                            messages.error(
+                                request, ('Maximum otp limits reached. Kindly support our customer care or try with different number'))
+                            return redirect('ValidatePhoneForgot')
+
+                        messages.success(
+                            request, ('OTP has been sent for password reset. Limits about to reach.'))
+                        return redirect('ForgotValidateOTP', phone=phone_number)
+
+                    else:
+                        count = count + 1
+
+                        PhoneOTP.objects.create(
+                            phone=phone,
+                            otp=otp,
+                            count=count,
+                            forgot=True,
+
+                        )
+
+                        messages.success(
+                            request, ('OTP has been sent for password reset'))
+                        return redirect('ForgotValidateOTP', phone=phone_number)
+
+                else:
+                    messages.error(
+                        request, ('OTP sending error. Please try after some time.'))
+                    return redirect('ValidatePhoneForgot')
+            else:
+                messages.error(
+                    request, ('Phone number not recognised. Kindly try a new account for this number'))
+                return redirect('ValidatePhoneForgot')
+    else:
+        return render(request, "Auth/ValidatePhoneForgot.html")
 
 
 def Login(request):
